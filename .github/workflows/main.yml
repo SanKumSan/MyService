@@ -10,12 +10,13 @@ on:
       - main
 
 env:
+  AZURE_REGISTRY_USERNAME: ${{ secrets.AZURE_REGISTRY_USERNAME }}
   run: |
     echo 'Build, Test and push to artifact'
     echo "SOLUTION_PATH - ${{ vars.SOLUTION_PATH }}"
     echo "OUTPUT_FILENAME - ${{ vars.OUTPUT_FILENAME }}"
     echo "TEST_PATH - ${{ vars.TEST_PATH }}"
-    echo "sec - ${{ secrets.AZURE_REGISTRY_USERNAME }}"
+    echo "sec - ${{ AZURE_REGISTRY_USERNAME }}"
     
 jobs:
   build:
