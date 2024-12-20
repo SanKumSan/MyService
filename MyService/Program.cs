@@ -1,4 +1,11 @@
+using Microsoft.Extensions.Logging;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Add logging to the application
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -36,7 +43,20 @@ app.MapGet("/weatherforecast", () =>
     .WithName("GetWeatherForecast")
     .WithOpenApi();
 
+StartTimer(app.Services.GetRequiredService<ILogger<Program>>());
+
 app.Run();
+
+void StartTimer(ILogger logger)
+{
+    var timer = new System.Timers.Timer(30000); // 5 seconds interval
+    timer.Elapsed += (sender, e) =>
+    {
+        logger.LogInformation("Main Timer: {time}", DateTime.Now);
+    };
+    timer.AutoReset = true;
+    timer.Enabled = true;
+}
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
