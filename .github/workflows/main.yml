@@ -11,7 +11,7 @@ on:
 
 # ff
 env:
-  AZURE_REGISTRY_USERNAME: ${{ secrets.AZURE_REGISTRY_USERNAME }}
+  SS: ${{ secrets.AZURE_REGISTRY_USERNAME }}
   run: |
     echo 'Build, Test and push to artifact'
     echo "SOLUTION_PATH - ${{ vars.SOLUTION_PATH }}"
