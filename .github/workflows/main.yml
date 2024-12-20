@@ -9,6 +9,7 @@ on:
     branches:
       - main
 
+# ff
 env:
   AZURE_REGISTRY_USERNAME: ${{ secrets.AZURE_REGISTRY_USERNAME }}
   run: |
