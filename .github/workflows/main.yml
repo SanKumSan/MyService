@@ -1,5 +1,5 @@
 name: Build Project
- 
+
 on:
   workflow_dispatch:
   push:
@@ -9,20 +9,27 @@ on:
     branches:
       - main
 
-# ff
 env:
-  SS: ${{ secrets.AZURE_REGISTRY_USERNAME }}
-  run: |
-    echo 'Build, Test and push to artifact'
-    echo "SOLUTION_PATH - ${{ vars.SOLUTION_PATH }}"
-    echo "OUTPUT_FILENAME - ${{ vars.OUTPUT_FILENAME }}"
-    echo "TEST_PATH - ${{ vars.TEST_PATH }}"
-    echo "sec - ${{ env.SS }}"
-    
+  SS: ${{ secrets.AZURE_REGISTRY_USERNAME }} # This should reference the secret correctly
+  SOLUTION_PATH: "path/to/solution"  # Define your default values here or pass as inputs
+  OUTPUT_FILENAME: "Build-Output"
+  TEST_PATH: "path/to/test.csproj"
+
 jobs:
   build:
     uses: SankumSan/github-actions/.github/workflows/build-dotnet-workflow.yml@main
     with:
-      SOLUTION_PATH: ${{ vars.SOLUTION_PATH }}
-      OUTPUT_FILENAME: ${{ vars.OUTPUT_FILENAME }}
-      TEST_PATH: ${{ vars.TEST_PATH }}
+      SOLUTION_PATH: ${{ env.SOLUTION_PATH }}
+      OUTPUT_FILENAME: ${{ env.OUTPUT_FILENAME }}
+      TEST_PATH: ${{ env.TEST_PATH }}
+
+  # Optionally, you can add a job to log variables before running the build workflow
+  log:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo Inputs and Secrets
+        run: |
+          echo "SOLUTION_PATH - ${{ env.SOLUTION_PATH }}"
+          echo "OUTPUT_FILENAME - ${{ env.OUTPUT_FILENAME }}"
+          echo "TEST_PATH - ${{ env.TEST_PATH }}"
+          echo "Azure Registry Username: ${{ secrets.AZURE_REGISTRY_USERNAME }}"  # This will be masked in the logs
