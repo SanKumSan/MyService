@@ -42,5 +42,6 @@ jobs:
     - name: Run Script with Secrets
       shell: pwsh
       run: |
-        chmod +x ${{vars.REG_SCRIPT_PATH}}
-        ${{ vars.REG_SCRIPT_PATH }}
+        $scriptPath = "${{ vars.REG_SCRIPT_PATH }}"
+        chmod +x $scriptPath
+        pwsh ${{ vars.REG_SCRIPT_PATH }}
