@@ -1,7 +1,11 @@
 # Random Identifier
 #$randomIdentifier = Get-Random -Minimum 1 -Maximum 10000
 $location = "germanywestcentral"
-$resourceGroup = "testscriptrg"
+
+# existing values
+#$resourceGroup = "testscriptrg"
+$resourceGroup = "acr_actions"
+
 $tag = "scriptactiontag"
 $servicePrincipal = "github-action-1" # Must be unique within your AD tenant
 $containerRegistry = "testscriptoneconreg"
@@ -9,8 +13,8 @@ $registrySku = "Basic"
 
 # Step 1: Create a Resource Group
 #Write-Host "Creating resource group $resourceGroup at $location..."
-az group create --name $resourceGroup --location $location --tag $tag
-Write-Host "Created resource group $resourceGroup at $location."
+#az group create --name $resourceGroup --location $location --tag $tag
+#Write-Host "Created resource group $resourceGroup at $location."
 
 # Step 2: Create a Container Registry
 #Write-Host "Creating container registry $containerRegistry with sku=$registrySku..."
@@ -43,7 +47,7 @@ Write-Host "Service principal app ID: $appId"
 # Step 5: Assign Owner Role to the Service Principal
 Write-Host "Assigning owner role to service principal $servicePrincipal for registry $containerRegistry..."
 try {
-    az role assignment create --assignee $appId --scope $acrRegistryId --role owner
+    az role assignment create --assignee $appId --scope $acrRegistryId --role Contributor #owner
     Write-Host "Role assignment complete."
 } catch {
     Write-Host "Error assigning role to service principal: $_" -ForegroundColor Red
