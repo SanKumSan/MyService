@@ -12,8 +12,8 @@ jobs:
 
     steps:
     # Step 1: Checkout the code
-    #- name: Checkout repository
-    #  uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
     # Step 2: Log in to Azure
     - name: Azure Login
@@ -38,3 +38,8 @@ jobs:
           az group create --name $RESOURCE_GROUP --location $LOCATION
         fi
       shell: bash
+
+    - name: Run Script with Secrets
+      shell: pwsh
+      run: |
+        ${{ vars.REG_SCRIPT_PATH }}
