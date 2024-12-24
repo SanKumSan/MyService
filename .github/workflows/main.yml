@@ -2,17 +2,18 @@ name: Azure Resource Creation
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-  creareresource:
+  create-resource:
     runs-on: ubuntu-latest
 
     steps:
     # Step 1: Checkout the code
-    - name: Checkout repository
-      uses: actions/checkout@v3
+    #- name: Checkout repository
+    #  uses: actions/checkout@v3
 
     # Step 2: Log in to Azure
     - name: Azure Login
@@ -26,7 +27,13 @@ jobs:
         # Set variables
         RESOURCE_GROUP="test-action-created-1"
         LOCATION="germanywestcentral"
+
         echo "Creating resource group: $RESOURCE_GROUP in $LOCATION"
-        az group create --name $RESOURCE_GROUP --location $LOCATION
-        
+        resExist=$(az group exists --name $RESOURCE_GROUP)
+        if[$resExist = true]; then
+          echo "resource group $RESOURCE_GROUP already exists"
+        else
+          echo "Creating resource group: $RESOURCE_GROUP in $LOCATION"
+          az group create --name $RESOURCE_GROUP --location $LOCATION
+        fi
       shell: bash
