@@ -1,10 +1,10 @@
 # Random Identifier
 #$randomIdentifier = Get-Random -Minimum 1 -Maximum 10000
 $location = "germanywestcentral"
-$resourceGroup = "test-script1-rg"
+$resourceGroup = "test-script-rg"
 $tag = "script-action-tag"
-$servicePrincipal = "test-script1-sp-sancr7" # Must be unique within your AD tenant
-$containerRegistry = "test-script1-con-reg"
+$servicePrincipal = "test-script-sp-sancr7" # Must be unique within your AD tenant
+$containerRegistry = "test-script-one-con-reg"
 $registrySku = "Basic"
 
 # Step 1: Create a Resource Group
