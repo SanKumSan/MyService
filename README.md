@@ -7,3 +7,4 @@
 * AZURE_CONTAINER_REGISTRY sec in reuse wor
 * con reg with ps
 * rbac assigned to myself. CA gone
+* option upadted in portal
