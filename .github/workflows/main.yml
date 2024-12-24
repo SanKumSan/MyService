@@ -23,4 +23,23 @@ jobs:
     steps:
       - name: Echo Inputs and Secrets
         run: |
-          echo "Azure Registry Username: ${{ secrets.AZURE_REGISTRY_USERNAME }}"  # This will be masked in the logs
+          echo "Azure Registry Username: ${{ secrets.AZURE_REGISTRY_USERNAME }}"
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the Repository, needed because to access script file
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # 2. Make the Shell Script Executable
+      - name: Set Script Permissions
+        run: chmod +x ${{vars.REG_SCRIPT_PATH}}
+
+      # 3. Run the Shell Script
+      - name: Execute Shell Script
+        run: ${{vars.REG_SCRIPT_PATH}}
+        
+      - name: Outputs
+        run: |
+          echo "Azure Container Registry created from script at : ${{vars.REG_SCRIPT_PATH}}"
