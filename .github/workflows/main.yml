@@ -30,7 +30,7 @@ jobs:
 
         echo "Creating resource group: $RESOURCE_GROUP in $LOCATION"
         resExist=$(az group exists --name $RESOURCE_GROUP)
-        if[$resExist = true]; then
+        if["$resExist" = true]; then
           echo "resource group $RESOURCE_GROUP already exists"
         else
           echo "Creating resource group: $RESOURCE_GROUP in $LOCATION"
