@@ -1,3 +1,65 @@
+# Build results
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs and database files
+*.log
+*.ldf
+*.mdf
+
+# Visual Studio-specific files
+.vs/
+.vscode/
+
+# Auto-generated files
+Generated\ Files/
+
+# Coverage and test results
+TestResults/
+*.coverage
+*.coveragexml
+*.testsettings
+*.vsmdi
+
+# Dependency directories
+packages/
+node_modules/
+
+# Configuration files
+appsettings.json
+appsettings.*.json
+
+# Rider-specific files
+.idea/
+*.sln.iml
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Recycle Bin used on Mac
 .idea
-./*/obj
-./*bin
+.idea/
+
+# Lock files
+*.lock
+
+# Additional build-related files
+*.ilk
+*.obj
+*.pch
+*.pdb
+
+# File for debugging
+*.ipch
+*.tlog
+*.tmp
+*.csproj.user
