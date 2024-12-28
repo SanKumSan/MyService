@@ -20,3 +20,36 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # 2. Parse Azure Credentials JSON
+    - name: Extract Azure Credentials
+      id: parse_creds
+      run: |
+        echo "Parsing Azure credentials..."
+        echo "AZURE_CLIENT_ID=$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r '.clientId')" >> $GITHUB_ENV
+        echo "AZURE_TENANT_ID=$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r '.tenantId')" >> $GITHUB_ENV
+        echo "AZURE_CLIENT_SECRET=$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r '.clientSecret')" >> $GITHUB_ENV
+        echo "AZURE_SUBSCRIPTION_ID=$(echo '${{ secrets.AZURE_CREDENTIALS }}' | jq -r '.subscriptionId')" >> $GITHUB_ENV
+
+    # 3. Log in to Azure
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # 4. Test Azure CLI Command
+    - name: Show Account Info
+      run: |
+        az account show
+        echo "Client ID: $AZURE_CLIENT_ID"
+        echo "Tenant ID: $AZURE_TENANT_ID"
+    
+    # 5. Test id
+    - name: Test id
+      run: |
+        if [ "${{ steps.parse_creds.outcome }}" == "success" ]; then
+          echo "Client ID: $AZURE_CLIENT_ID"
+          echo "Tenant ID: $AZURE_TENANT_ID"
+        else
+          echo "The random-step did not complete successfully."
+        fi
