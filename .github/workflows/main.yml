@@ -29,4 +29,4 @@ jobs:
         az extension add --name containerapp
 
     - name: Run Deployment Script
-      run: pwsh ./deploy-rabbitmq.ps1
+      run: pwsh ./Scripts/rabbit-mq.ps1
