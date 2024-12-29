@@ -25,6 +25,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Define a simple welcome message endpoint
+app.MapGet("/", () =>
+{
+    return Results.Ok("Welcome Test Web Api");
+})
+.WithName("GetWelcomeMessage")
+.WithOpenApi(); // OpenAPI documentation support
+
 // Start RabbitMQ consumer to listen for messages
 var rabbitMqConsumer = app.Services.GetRequiredService<RabbitMqConsumer>();
 rabbitMqConsumer.ReceiveMessages(); // Start the consumer to listen to RabbitMQ
@@ -47,9 +55,4 @@ void StartTimer(ILogger logger)
     };
     timer.AutoReset = true;
     timer.Enabled = true;
-}
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
