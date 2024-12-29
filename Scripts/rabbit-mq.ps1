@@ -7,7 +7,7 @@ $Image = "rabbitmq:3-management"
 $Cpu = "0.5"
 $Memory = "1.0Gi"
 $Ingress = "external"
-$TargetPort = 15672
+$TargetPorts = @(15672, 5672)  # Management and AMQP ports
 $EnvVars = @{
     RABBITMQ_DEFAULT_USER = "admin"
     RABBITMQ_DEFAULT_PASS = "admin"
@@ -25,7 +25,7 @@ az containerapp create `
     --resource-group $ResourceGroupName `
     --environment $EnvironmentName `
     --image $Image `
-    --target-port $TargetPort `
+    --target-port $($TargetPorts -join ",") `
     --ingress $Ingress `
     --cpu $Cpu `
     --memory $Memory `

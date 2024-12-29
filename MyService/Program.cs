@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Logging;
+using MyService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +43,11 @@ app.MapGet("/weatherforecast", () =>
     .WithName("GetWeatherForecast")
     .WithOpenApi();
 
+var consumer = new RabbitMqConsumer();
+consumer.ReceiveMessages(); // Start the consumer to listen to RabbitMQ
+
+// Start RabbitMQ producer to send messages
+//var rabbitMqProducer = new RabbitMqProducer();
 StartTimer(app.Services.GetRequiredService<ILogger<Program>>());
 
 app.Run();
@@ -53,6 +58,7 @@ void StartTimer(ILogger logger)
     timer.Elapsed += (sender, e) =>
     {
         logger.LogInformation("Main Timer: {time}", DateTime.Now);
+        logger.LogInformation("Sending message: {Message}", "Hello from .NET Web API!" + DateTime.Now.ToString());
     };
     timer.AutoReset = true;
     timer.Enabled = true;
