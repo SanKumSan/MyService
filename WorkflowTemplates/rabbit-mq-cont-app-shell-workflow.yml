@@ -1,0 +1,32 @@
+name: Create n Deploy Rabbitmq container app n Shell
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  create-resource:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the code
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Step 2: Log in to Azure
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Install PowerShell and Azure CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y powershell
+        pwsh -Command "Install-Module -Name Az -AllowClobber -Scope CurrentUser -Force"
+        az extension add --name containerapp
+
+    - name: Run Deployment Script
+      run: pwsh ./Scripts/rabbit-mq.ps1

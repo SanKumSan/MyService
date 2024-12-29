@@ -8,3 +8,4 @@
 * con reg with ps
 * rbac assigned to myself. CA gone
 * option upadted in portal
+* az ad sp create-for-rbac --name "<name>" --sdk-auth
