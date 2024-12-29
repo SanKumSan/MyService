@@ -47,7 +47,7 @@ var consumer = new RabbitMqConsumer();
 consumer.ReceiveMessages(); // Start the consumer to listen to RabbitMQ
 
 // Start RabbitMQ producer to send messages
-//var rabbitMqProducer = new RabbitMqProducer();
+var rabbitMqProducer = new RabbitMqProducer();
 StartTimer(app.Services.GetRequiredService<ILogger<Program>>());
 
 app.Run();
@@ -58,7 +58,9 @@ void StartTimer(ILogger logger)
     timer.Elapsed += (sender, e) =>
     {
         logger.LogInformation("Main Timer: {time}", DateTime.Now);
-        logger.LogInformation("Sending message: {Message}", "Hello from .NET Web API!" + DateTime.Now.ToString());
+        var msg = "Sending message: Hello from .NET Web API!" + DateTime.Now.ToString();
+        rabbitMqProducer.SendMessage(msg);
+        logger.LogInformation("Sending message: {Message}", msg);
     };
     timer.AutoReset = true;
     timer.Enabled = true;
