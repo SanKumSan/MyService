@@ -21,7 +21,11 @@ namespace MyService.Services
             using var channel = connection.CreateModel();
 
             var qName = "test-san-queue";
-            channel.QueueDeclare(queue: qName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+            channel.QueueDeclare(queue: qName,
+                                durable: true,
+                                exclusive: false,
+                                autoDelete: false,
+                                arguments: null);
 
             var body = Encoding.UTF8.GetBytes(message);
 
