@@ -56,3 +56,7 @@ void StartTimer(ILogger logger)
     timer.AutoReset = true;
     timer.Enabled = true;
 }
+
+// TODO
+// create a rabiitmq containmer app soifectlz from, actions with cofrec pra,s
+// columes data nd so on....
