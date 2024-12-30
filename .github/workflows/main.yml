@@ -21,16 +21,16 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-    # mydockerimagessancr7.azurecr.io/test-web-app-net8:latest
+    # https://github.com/marketplace/actions/azure-container-apps-build-and-deploy
     - name: Build and deploy to Container App
       uses: azure/container-apps-deploy-action@v1
       with:
         appSourcePath: ${{ github.workspace }}
         resourceGroup: acr_actions  #Azure resource group name
-        #dockerfilePath: ${{ vars.DOCKER_FILE_PATH }} # DOCKER_FILE_PATH
         acrName: mydockerimagessancr7 # Azure Container Registry name
         containerAppName: cont-app-ex-2 # Azure Container app name
         imageToBuild: mydockerimagessancr7.azurecr.io/test-web-app-net8:${{ github.run_number }}
+        containerAppEnvironment: my-test-virtual-env
 
     - name: END
       run: |
