@@ -29,7 +29,7 @@ jobs:
         resourceGroup: acr_actions  #Azure resource group name
         acrName: mydockerimagessancr7 # Azure Container Registry name
         containerAppName: cont-app-ex-2 # Azure Container app name
-        imageToBuild: mydockerimagessancr7.azurecr.io/test-web-app-net8:${{ github.run_number }}
+        imageToBuild: mydockerimagessancr7.azurecr.io/test-web-app-net8:52 #${{ github.run_number }}
         containerAppEnvironment: my-test-virtual-env
 
     - name: END

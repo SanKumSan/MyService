@@ -1,0 +1,65 @@
+name: Container App Build and Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  create-resource:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the code
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Step 2: Log in to Azure
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    # Step 3: Create RabbitMQ Container App from Docker Image
+    - name: Create RabbitMQ Container App
+      uses: azure/container-apps-deploy-action@v1
+      with:
+        resourceGroup: acr_actions  # Azure resource group name
+        acrName: mydockerimagessancr7 # Azure Container Registry name
+        containerAppName: rabbitmq-container-app # Azure Container app name
+        imageToBuild: "rabbitmq:management" # Docker image to use for RabbitMQ "docker.io/rabbitmq:3.12.2-management-alpine",
+        containerAppEnvironment: "my-container-app-test-env"  # Define container app environment (if needed)
+        # Environment variables for RabbitMQ (user/password)
+        environmentVariables: |
+          RABBITMQ_DEFAULT_USER=admin
+          RABBITMQ_DEFAULT_PASS=admin
+        # Port mappings for RabbitMQ
+        ports: |
+          - 5672 # RabbitMQ default port
+          - 15672 # RabbitMQ management console port
+        volumeMounts: |
+          /var/lib/rabbitmq=/mnt/rabbitmq-data
+          /etc/rabbitmq=/mnt/rabbitmq-config
+      # volumes: Check this syntax and command and test
+      #   - name: rabbitmq-storage
+      #     storageType: AzureFile
+      #     mountPath: /var/lib/rabbitmq/mnesia
+
+
+    # Step 4: Create Net Container App build and deploy
+    - name: Build and deploy to Container App
+      uses: azure/container-apps-deploy-action@v1
+      with:
+        appSourcePath: ${{ github.workspace }}
+        resourceGroup: acr_actions  #Azure resource group name
+        #dockerfilePath: ${{ vars.DOCKER_FILE_PATH }} # DOCKER_FILE_PATH
+        acrName: mydockerimagessancr7 # Azure Container Registry name
+        containerAppName: cont-app-ex-1 # Azure Container app name
+        #imageToBuild: mydockerimagessancr7.azurecr.io/test-web-app-net8:latest #<registryUrl>/<repo>:<tag>
+        imageToBuild: mydockerimagessancr7.azurecr.io/test-web-app-net8:${{ github.run_number }}
+
+    - name: END
+      run: |
+        echo "GWS = ${{ github.workspace }}"
+        echo "STEPS finished...!"
