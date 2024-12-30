@@ -29,11 +29,10 @@ jobs:
         resourceGroup: acr_actions  #Azure resource group name
         #dockerfilePath: ${{ vars.DOCKER_FILE_PATH }} # DOCKER_FILE_PATH
         acrName: mydockerimagessancr7 # Azure Container Registry name
-        containerAppName: cont-app-ex-1 # Azure Container app name
-        #imageToBuild: mydockerimagessancr7.azurecr.io/test-web-app-net8:latest #<registryUrl>/<repo>:<tag>
+        containerAppName: cont-app-ex-2 # Azure Container app name
         imageToBuild: mydockerimagessancr7.azurecr.io/test-web-app-net8:${{ github.run_number }}
 
     - name: END
       run: |
-        echo "GWS = ${{ github.workspace }}"
+        # echo "GWS = ${{ github.workspace }}"
         echo "STEPS finished...!"
