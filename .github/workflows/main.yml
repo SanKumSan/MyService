@@ -34,15 +34,14 @@ jobs:
           --name rabbitmq \
           --resource-group acr_actions \
           --image ${{ secrets.DOCKER_USERNAME }}/rabbitmq:3-management \
-          --env-vars RABBITMQ_DEFAULT_USER=${{ secrets.RABBITMQ_DEFAULT_USER }} \
-                     RABBITMQ_DEFAULT_PASS=${{ secrets.RABBITMQ_DEFAULT_PASS }} \
           --cpu 0.5 \
           --memory 1.0Gi \
           --min-replicas 1 \
           --max-replicas 3 \
           --revision-suffix rabbitmq-volumes \
-          --storage-mounts \
-            /data=/mnt/data-storage,/logs=/mnt/log-storage
+          --secret-volume-mount \
+            /data=/mnt/data-storage \
+            /logs=/mnt/log-storage
 
     - name: Configure RabbitMQ Persistent Storage
       run: |
