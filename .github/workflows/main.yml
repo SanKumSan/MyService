@@ -32,7 +32,7 @@ jobs:
       run: |
         az containerapp update \
           --name rabbitmq \
-          --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+          --resource-group acr_actions \
           --image ${{ secrets.DOCKER_USERNAME }}/rabbitmq:3-management \
           --env-vars RABBITMQ_DEFAULT_USER=${{ secrets.RABBITMQ_DEFAULT_USER }} \
                      RABBITMQ_DEFAULT_PASS=${{ secrets.RABBITMQ_DEFAULT_PASS }} \
