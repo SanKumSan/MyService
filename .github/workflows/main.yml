@@ -34,3 +34,21 @@ jobs:
         # docker push username/rabbitmq-public:tag
         docker push ${{ secrets.DOCKER_USERNAME }}/sanrabmq:latest
         echo "build and push to docker hub done...!"
+    
+    - name: Deploy to Azure Container Apps with Volumes
+      run: |
+        az containerapp create \
+          --name rabbitmq \
+          --resource-group acr_actions \
+          --environment my-test-virtual-env \
+          --image ${{ secrets.DOCKER_USERNAME }}/sanrabmq:latest \
+          --cpu 0.5 \
+          --memory 1.0Gi \
+          --min-replicas 1 \
+          --max-replicas 3 \
+          --revision-suffix rabbitmq-volumes
+          
+          #--secret-volume-mount "/mnt/rabbitmq-data"
+          #--secret-volume-mount "/mnt/rabbitmq-logs"
+          #--secrets STORAGE_ACCOUNT_NAME=${{ secrets.STORAGE_ACCOUNT_NAME }} \
+          #--secrets STORAGE_ACCOUNT_KEY=${{ secrets.STORAGE_ACCOUNT_KEY }}
