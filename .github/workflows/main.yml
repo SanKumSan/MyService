@@ -42,16 +42,16 @@ jobs:
           --resource-group acr_actions \
           --environment my-test-virtual-env \
           --image ${{ secrets.DOCKER_USERNAME }}/sanrabmq:latest \
-          --ingress external
-          --target-port 15672
-          --target-port 5672
+          --ingress external \
+          --target-port 15672 \
+          --target-port 5672 \
           --cpu 0.5 \
           --memory 1.0Gi \
           --min-replicas 1 \
           --max-replicas 3 \
-          --revision-suffix rabbitmq-volumes
-          --secret-volume-mount "mnt/secrets"
-          --secrets mysecret=secretvalue1 anothersecret="test san secret value shhhh."
+          --revision-suffix rabbitmq-volumes \
+          --secret-volume-mount "mnt/secrets" \
+          --secrets mysecret=secretvalue1 anothersecret="test san secret value shhhh." \
           --env-vars GREETING="Hello, world env var" SECRETENV=secretref:anothersecret
           
           #--secret-volume-mount "/mnt/rabbitmq-data"
