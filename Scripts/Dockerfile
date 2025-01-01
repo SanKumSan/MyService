@@ -6,8 +6,8 @@ FROM rabbitmq:3.13.7-management-alpine
 #COPY enabled_plugins /etc/rabbitmq/enabled_plugins
 
 # Environment variables for default user and password
-ENV RABBITMQ_DEFAULT_USER=username
-ENV RABBITMQ_DEFAULT_PASS=password
+#ENV RABBITMQ_DEFAULT_USER=username
+#ENV RABBITMQ_DEFAULT_PASS=password
 # Define environment variables.
 #ENV RABBITMQ_LOG_BASE /data/log
 #ENV RABBITMQ_MNESIA_BASE /data/mnesia
