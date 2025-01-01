@@ -30,18 +30,18 @@ jobs:
 
     - name: Deploy to Azure Container Apps with Volumes
       run: |
-        az containerapp update \
+        az containerapp create \
           --name rabbitmq \
           --resource-group acr_actions \
+          --environment my-test-virtual-env \
           --image ${{ secrets.DOCKER_USERNAME }}/rabbitmq:3-management \
           --cpu 0.5 \
           --memory 1.0Gi \
           --min-replicas 1 \
           --max-replicas 3 \
           --revision-suffix rabbitmq-volumes \
-          --secret-volume-mount \
-            /data=/mnt/data-storage \
-            /logs=/mnt/log-storage
+          --secret-volume-mount "/mnt/rabbitmq-data"
+          --secret-volume-mount "/mnt/rabbitmq-logs"
 
     - name: Configure RabbitMQ Persistent Storage
       run: |
