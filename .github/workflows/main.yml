@@ -24,46 +24,11 @@ jobs:
     - name: Build Docker Image
       run: |
         echo "$docker file path = {{ vars.DOCKER_RMQ }}"
-        docker build -f ${{ vars.DOCKER_RMQ }} -t ${{ secrets.DOCKER_USERNAME }}/rabbitmq:3-management .
-        docker push ${{ secrets.DOCKER_USERNAME }}/rabbitmq:3-management
+        # docker build -f Dockerfile -t rabbitmq:3-management .
+        # docker tag your_image_name:tag username/rabbitmq-public:tag
+        #docker build -f ${{ vars.DOCKER_RMQ }} -t ${{ secrets.DOCKER_USERNAME }}/rabbitmq:3-management .
+        docker build -f ${{ vars.DOCKER_RMQ }} -t rabbitmq:3-management .
+        docker tag rabbitmq:3-management ${{ secrets.DOCKER_USERNAME }}/sanrab:latest
+        # docker push username/rabbitmq-public:tag
+        docker push ${{ secrets.DOCKER_USERNAME }}/sanrab:latest
         echo "build and push to docker hub done...!"
-
-    - name: Deploy to Azure Container Apps with Volumes
-      run: |
-        az containerapp create \
-          --name rabbitmq \
-          --resource-group acr_actions \
-          --environment my-test-virtual-env \
-          --image ${{ secrets.DOCKER_USERNAME }}/rabbitmq:3-management \
-          --cpu 0.5 \
-          --memory 1.0Gi \
-          --min-replicas 1 \
-          --max-replicas 3 \
-          --revision-suffix rabbitmq-volumes
-          
-          #--secret-volume-mount "/mnt/rabbitmq-data"
-          #--secret-volume-mount "/mnt/rabbitmq-logs"
-          #--secrets STORAGE_ACCOUNT_NAME=${{ secrets.STORAGE_ACCOUNT_NAME }} \
-          #--secrets STORAGE_ACCOUNT_KEY=${{ secrets.STORAGE_ACCOUNT_KEY }}
-
-    - name: Configure RabbitMQ Persistent Storage
-      run: |
-        echo "Add storage for rabbitmq-data"
-        az containerapp storage add \
-          --name rabbitmq \
-          --resource-group acr_actions \
-          --storage-name data-storage \
-          --type AzureFile \
-          --account-name ${{ secrets.STORAGE_ACCOUNT_NAME }} \
-          --account-key ${{ secrets.STORAGE_ACCOUNT_KEY }} \
-          --share-name rabbitmq-data
-        
-        echo "Add storage for rabbitmq-logs"
-        az containerapp storage add \
-          --name rabbitmq \
-          --resource-group acr_actions \
-          --storage-name log-storage \
-          --type AzureFile \
-          --account-name ${{ secrets.STORAGE_ACCOUNT_NAME }} \
-          --account-key ${{ secrets.STORAGE_ACCOUNT_KEY }} \
-          --share-name rabbitmq-logs
