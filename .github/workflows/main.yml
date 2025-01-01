@@ -23,7 +23,8 @@ jobs:
 
     - name: Build Docker Image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/rabbitmq:3-management .
+        echo "$docker file path = {{ vars.DOCKER_RMQ }}"
+        docker build -f ${{ vars.DOCKER_RMQ }} -t ${{ secrets.DOCKER_USERNAME }}/rabbitmq:3-management .
         docker push ${{ secrets.DOCKER_USERNAME }}/rabbitmq:3-management
         echo "build and push to docker hub done...!"
 
