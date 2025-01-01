@@ -1,38 +1,66 @@
-name: Container App Build and Deploy
+name: Build and Deploy RabbitMQ to Azure Container Apps
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
-  create-resource:
+  deploy-rabbitmq:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Checkout the code
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v3
 
-    # Step 2: Log in to Azure
-    - name: Azure Login
+    - name: Log in to Azure
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
-    # https://github.com/marketplace/actions/azure-container-apps-build-and-deploy
-    - name: Build and deploy to Container App
-      uses: azure/container-apps-deploy-action@v1
-      with:
-        appSourcePath: ${{ github.workspace }}
-        resourceGroup: acr_actions  #Azure resource group name
-        acrName: mydockerimagessancr7 # Azure Container Registry name
-        containerAppName: cont-app-ex-1 # Azure Container app name
-        imageToBuild: mydockerimagessancr7.azurecr.io/test-web-app-net8:${{ github.run_number }} #cretes new image with this name
-        containerAppEnvironment: my-test-virtual-env
 
-    - name: END
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    - name: Build Docker Image
       run: |
-        # echo "GWS = ${{ github.workspace }}"
-        echo "STEPS finished...!"
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/rabbitmq:3-management .
+        docker push ${{ secrets.DOCKER_USERNAME }}/rabbitmq:3-management
+        echo "build and push to docker hub done...!"
+
+    - name: Deploy to Azure Container Apps with Volumes
+      run: |
+        az containerapp update \
+          --name rabbitmq \
+          --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+          --image ${{ secrets.DOCKER_USERNAME }}/rabbitmq:3-management \
+          --env-vars RABBITMQ_DEFAULT_USER=${{ secrets.RABBITMQ_DEFAULT_USER }} \
+                     RABBITMQ_DEFAULT_PASS=${{ secrets.RABBITMQ_DEFAULT_PASS }} \
+          --cpu 0.5 \
+          --memory 1.0Gi \
+          --min-replicas 1 \
+          --max-replicas 3 \
+          --revision-suffix rabbitmq-volumes \
+          --storage-mounts \
+            /data=/mnt/data-storage,/logs=/mnt/log-storage
+
+    - name: Configure RabbitMQ Persistent Storage
+      run: |
+        echo "Add storage for rabbitmq-data"
+        az containerapp storage add \
+          --name rabbitmq \
+          --resource-group acr_actions \
+          --storage-name data-storage \
+          --type AzureFile \
+          --account-name ${{ secrets.STORAGE_ACCOUNT_NAME }} \
+          --account-key ${{ secrets.STORAGE_ACCOUNT_KEY }} \
+          --share-name rabbitmq-data
+        
+        echo "Add storage for rabbitmq-logs"
+        az containerapp storage add \
+          --name rabbitmq \
+          --resource-group acr_actions \
+          --storage-name log-storage \
+          --type AzureFile \
+          --account-name ${{ secrets.STORAGE_ACCOUNT_NAME }} \
+          --account-key ${{ secrets.STORAGE_ACCOUNT_KEY }} \
+          --share-name rabbitmq-logs
