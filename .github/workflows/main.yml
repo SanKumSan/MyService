@@ -52,8 +52,8 @@ jobs:
           --revision-suffix rabbitmq-cluster \
           --secret-volume-mount "mnt/secrets" \
           --secrets mysecret=secretvalue1 anothersecret="test san secret value shhhh." \
-          --secret-name RABBITMQ_DEFAULT_USER=${{ secrets.RABBITMQ_DEFAULT_USER }} \
-          --secret-name RABBITMQ_DEFAULT_PASS=${{ secrets.RABBITMQ_DEFAULT_PASS }} \
+          --env-vars RABBITMQ_DEFAULT_USER=${{ secrets.RABBITMQ_DEFAULT_USER }} \
+          --env-vars RABBITMQ_DEFAULT_PASS=${{ secrets.RABBITMQ_DEFAULT_PASS }} \
           --env-vars GREETING="var 1, Hello, world" SECRETENV=secretref:anothersecret
           
           #--secret-volume-mount "/mnt/rabbitmq-data"
