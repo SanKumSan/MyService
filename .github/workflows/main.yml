@@ -28,7 +28,7 @@ jobs:
         # docker tag your_image_name:tag username/rabbitmq-public:tag
         #docker build -f ${{ vars.DOCKER_RMQ }} -t ${{ secrets.DOCKER_USERNAME }}/rabbitmq:3-management .
         docker build -f ${{ vars.DOCKER_RMQ }} -t rabbitmq:3-management .
-        docker tag rabbitmq:3-management ${{ secrets.DOCKER_USERNAME }}/sanrab:latest
+        docker tag rabbitmq:3-management ${{ secrets.DOCKER_USERNAME }}/sanrabmq:latest
         # docker push username/rabbitmq-public:tag
         docker push ${{ secrets.DOCKER_USERNAME }}/sanrab:latest
         echo "build and push to docker hub done...!"
