@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - main
-
+env:
+  dockerrepo_name: sanrabmq
+  
 jobs:
   deploy-rabbitmq:
     runs-on: ubuntu-latest
@@ -28,7 +30,7 @@ jobs:
         # docker tag your_image_name:tag username/rabbitmq-public:tag
         #docker build -f ${{ vars.DOCKER_RMQ }} -t ${{ secrets.DOCKER_USERNAME }}/rabbitmq:3-management .
         docker build -f ${{ vars.DOCKER_RMQ }} -t rabbitmq:3-management .
-        docker tag rabbitmq:3-management ${{ secrets.DOCKER_USERNAME }}/sanrabmq:latest
+        docker tag rabbitmq:3-management ${{ secrets.DOCKER_USERNAME }}/{{env.dockerreponame}}:latest
         # docker push username/rabbitmq-public:tag
-        docker push ${{ secrets.DOCKER_USERNAME }}/sanrab:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/{{env.dockerreponame}:latest
         echo "build and push to docker hub done...!"
