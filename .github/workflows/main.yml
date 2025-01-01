@@ -39,11 +39,12 @@ jobs:
           --memory 1.0Gi \
           --min-replicas 1 \
           --max-replicas 3 \
-          --revision-suffix rabbitmq-volumes \
-          --secret-volume-mount "/mnt/rabbitmq-data"
-          --secret-volume-mount "/mnt/rabbitmq-logs"
-          --secrets STORAGE_ACCOUNT_NAME=${{ secrets.STORAGE_ACCOUNT_NAME }} \
-          --secrets STORAGE_ACCOUNT_KEY=${{ secrets.STORAGE_ACCOUNT_KEY }}
+          --revision-suffix rabbitmq-volumes
+          
+          #--secret-volume-mount "/mnt/rabbitmq-data"
+          #--secret-volume-mount "/mnt/rabbitmq-logs"
+          #--secrets STORAGE_ACCOUNT_NAME=${{ secrets.STORAGE_ACCOUNT_NAME }} \
+          #--secrets STORAGE_ACCOUNT_KEY=${{ secrets.STORAGE_ACCOUNT_KEY }}
 
     - name: Configure RabbitMQ Persistent Storage
       run: |
