@@ -47,6 +47,12 @@ jobs:
           --min-replicas 1 \
           --max-replicas 3 \
           --revision-suffix rabbitmq-volumes
+          --ingress external
+          --target-port 15672
+          --target-port 5672
+          --secret-volume-mount "mnt/secrets"
+          --secrets mysecret=secretvalue1 anothersecret="test san secret value shhhh."
+          --env-vars GREETING="Hello, world env var" SECRETENV=secretref:anothersecret
           
           #--secret-volume-mount "/mnt/rabbitmq-data"
           #--secret-volume-mount "/mnt/rabbitmq-logs"
