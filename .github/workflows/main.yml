@@ -51,10 +51,11 @@ jobs:
           --max-replicas 3 \
           --revision-suffix rabbitmq-cluster \
           --secret-volume-mount "mnt/secrets" \
-          --secrets mysecret=secretvalue1 anothersecret="test san secret value shhhh." \
-          --env-vars RABBITMQ_DEFAULT_USER=admin \
-          --env-vars RABBITMQ_DEFAULT_PASS=admin \
-          --env-vars GREETING="var 1, Hello, world" SECRETENV=secretref:anothersecret
+          --secrets mysecret=secretvalue1 anothersecret="test san secret value shhhh." 
+          #\
+          #--env-vars RABBITMQ_DEFAULT_USER=admin \
+          #--env-vars RABBITMQ_DEFAULT_PASS=admin \
+          #--env-vars GREETING="var 1, Hello, world" SECRETENV=secretref:anothersecret
           
           #--secret-volume-mount "/mnt/rabbitmq-data"
           #--secret-volume-mount "/mnt/rabbitmq-logs"
