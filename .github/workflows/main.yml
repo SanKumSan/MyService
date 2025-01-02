@@ -38,7 +38,7 @@ jobs:
     - name: Deploy to Azure Container Apps with Volumes
       run: |
         az containerapp create \
-          --name rabbitmq \
+          --name rabbitmq-${{ github.run_number }} \
           --resource-group acr_actions \
           --environment my-test-virtual-env \
           --image ${{ secrets.DOCKER_USERNAME }}/sanrabmq:latest \
@@ -52,8 +52,8 @@ jobs:
           --revision-suffix rabbitmq-cluster \
           --secret-volume-mount "mnt/secrets" \
           --secrets mysecret=secretvalue1 anothersecret="test san secret value shhhh." \
-          --env-vars RABBITMQ_DEFAULT_USER=${{ secrets.RABBITMQ_DEFAULT_USER }} \
-          --env-vars RABBITMQ_DEFAULT_PASS=${{ secrets.RABBITMQ_DEFAULT_PASS }} \
+          --env-vars RABBITMQ_DEFAULT_USER=admin \
+          --env-vars RABBITMQ_DEFAULT_PASS=admin \
           --env-vars GREETING="var 1, Hello, world" SECRETENV=secretref:anothersecret
           
           #--secret-volume-mount "/mnt/rabbitmq-data"
