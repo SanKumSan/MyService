@@ -52,10 +52,9 @@ jobs:
           --revision-suffix rabbitmq-cluster \
           --secret-volume-mount "mnt/secrets" \
           --secrets mysecret=secretvalue1 anothersecret="test san secret value shhhh." \
-          --env-vars RABBITMQ_DEFAULT_USER=admin \
-          --env-vars RABBITMQ_DEFAULT_PASS=pass
-          #--env-vars GREETING="var 1, Hello, world" SECRETENV=secretref:anothersecret
+          --env-vars RABBITMQ_DEFAULT_USER=admin RABBITMQ_DEFAULT_PASS=pass
           
+          #--env-vars GREETING="var 1, Hello, world" SECRETENV=secretref:anothersecret
           #--secret-volume-mount "/mnt/rabbitmq-data"
           #--secret-volume-mount "/mnt/rabbitmq-logs"
           #--secrets STORAGE_ACCOUNT_NAME=${{ secrets.STORAGE_ACCOUNT_NAME }} \
